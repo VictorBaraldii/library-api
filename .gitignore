@@ -45,4 +45,8 @@ env.var
 
 # IDE
 /.idea
+<<<<<<< HEAD
 *.iml
+=======
+*.iml
+>>>>>>> 39789ce5ce3f3003d7e02cf84e62d664af15dcfb
