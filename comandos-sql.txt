@@ -1,0 +1,51 @@
+# Aula 1
+CREATE TABLE autor(
+	id UUID NOT NULL PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	data_nascimento DATE NOT NULL,
+	nacionalidade VARCHAR(50) NOT NULL,
+	data_cadastro TIMESTAMP,
+	data_atualizacao TIMESTAMP,
+	id_usuario UUID
+);
+
+CREATE TABLE livro(
+	id uuid NOT NULL PRIMARY KEY,
+	isbn VARCHAR(20) NOT NULL unique,
+	titulo VARCHAR(150) NOT NULL,
+	data_publicacao DATE NOT NULL,
+	genero VARCHAR(30) NOT NULL,
+	preco NUMERIC(18, 2),
+	data_cadastro TIMESTAMP,
+    data_atualizacao TIMESTAMP,
+    id_usuario UUID,
+	id_autor uuid NOT NULL REFERENCES autor(id),
+	CONSTRAINT chk_genero CHECK (genero in ('FICCAO', 'FANTASIA', 'MISTERIO', 'ROMANCE', 'BIOGRAFIA', 'CIENCIA'))
+);
+
+CREATE TABLE usuario(
+    id UUID NOT NULL PRIMARY KEY,
+    login VARCHAR(20) NOT NULL UNIQUE,
+    senha VARCHAR(300) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    roles VARCHAR[]
+);
+
+CREATE TABLE client (
+    id UUID NOT NULL PRIMARY KEY,
+    client_id VARCHAR(150) NOT NULL,
+    client_secret VARCHAR(400) NOT NULL,
+    redirect_uri VARCHAR(200) NOT NULL,
+    scope VARCHAR(50)
+);
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+
+INSERT INTO usuario (id, login, senha, email, roles) VALUES (uuid_generate_v4(), 'gerente', '$2a$12$QlKPPB4SHUnALG1nDBd/gua2nY/Q7wWkrqK7bJ6Q72qBVpcbPXnii', 'gerente@email.com', '{GERENTE}');
+
+
+INSERT INTO client (id, client_id, client_secret, redirect_uri, scope) VALUES (uuid_generate_v4(), 'client-production', '$2a$12$8QGs94KYeS0RIAmWtvr6Y.Oh0/z0Mjxvr5iWX6OF8UEAGAAFdocgO', 'http://localhost:8080/authorized','{GERENTE}');
+
+
+
+http://localhost:8080/oauth2/authorize?response_type=code&client_id=meu-client&scope=GERENTE&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauthorized
