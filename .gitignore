@@ -31,3 +31,18 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Logs
+*.log
+*.gz
+
+# Environment
+.env
+env.var
+
+# Build
+/target
+
+# IDE
+/.idea
+*.iml
